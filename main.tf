@@ -52,9 +52,8 @@ provider "docker" {}
 
 # AWS provider configuration
 provider "aws" {
-  region     = var.aws_region
-  access_key = var.aws_access_key
-  secret_key = var.aws_secret_key
+  region = var.aws_region
+  # Credentials will be picked up from environment variables or GitHub Actions secrets
 }
 
 # EC2 instance resource
@@ -67,6 +66,27 @@ resource "aws_instance" "example" {
   tags = {
     Name = var.aws_instance_name
   }
+  user_data = <<-EOF
+    #!/bin/bash
+    apt-get update -y
+    apt-get install -y python3-pip git
+    cd /home/ubuntu
+    git clone https://github.com/saniya-khan33015/Dockerized-Marketing-PHP-Laravel-Service.git app
+    cd app
+    pip3 install -r requirements.txt
+    nohup python3 app/main.py &
+  EOF
+}
+# Output EC2 public IP
+output "ec2_public_ip" {
+  description = "Public IP address of the EC2 instance"
+  value       = aws_instance.example.public_ip
+}
+
+# Output EC2 public DNS
+output "ec2_public_dns" {
+  description = "Public DNS of the EC2 instance"
+  value       = aws_instance.example.public_dns
 }
 
 # Variables for AWS EC2 instance
