@@ -1,89 +1,51 @@
-# Marketing Management Web Application
+## # Group 08D12 DO-48: Marketing Service (Python Flask)
+## Division
+D12
+## Group
+Group 08D12
+## Project Number
+DO-46
+## Problem Statement
 
-## Overview
-A production-ready FastAPI web app for marketing management, featuring JWT authentication, lead and campaign management, MongoDB integration, and Docker orchestration.
+Dockerized Marketing PHP Laravel Service
 
-## Features
-- User registration, login, JWT authentication, role-based access
-- Lead CRUD, status tracking, search/filter
-- Campaign creation, lead assignment, statistics
-- MongoDB container, PyMongo ORM
-- Pydantic validation, structured logging, CORS
-- Multi-stage Dockerfile, Docker Compose
+## Description
 
-## Setup Instructions
+Containerize a Marketing service (built with PHP Laravel) using industry best practices for Docker. The project includes writing multi-stage Dockerfiles to optimize image size and security,alongside a Docker Compose configuration to orchestrate the application and its database dependencies. This ensures a consistent, portable development and production environment across the entire team.
 
-### 1. Clone the repository
-```
-git clone <repo-url>
-cd App.Test
-```
+## Structure
+- `marketing_service/` — Flask app and Dockerfile
+- `docker-compose.yml` — Orchestrates app and database
 
-### 2. Environment Configuration
-Edit `.env` for DB and JWT settings.
+## Usage
 
-### 3. Build Docker Images
-```
-docker build -t fastapi_app .
-```
-
-### 4. Start with Docker Compose
-```
+### 1. Build and Run
+```sh
 docker-compose up --build
 ```
+- The Flask app will be available at http://localhost:5000
+- The Postgres database will be available at localhost:5432
 
-### 5. API Usage Examples
-#### Register
-```
-POST /auth/register
-{
-  "email": "user@example.com",
-  "password": "yourpassword",
-  "role": "Admin"
-}
-```
-#### Login
-```
-POST /auth/login
-{
-  "email": "user@example.com",
-  "password": "yourpassword"
-}
-```
-#### Create Lead
-```
-POST /leads/
-{
-  "name": "John Doe",
-  "email": "john@example.com",
-  "status": "New"
-}
-```
-#### Create Campaign
-```
-POST /campaigns/
-{
-  "name": "Spring Sale",
-  "description": "Discounts for spring"
-}
+### 2. Stopping
+```sh
+docker-compose down
 ```
 
-## Folder Structure
-- app/
-  - main.py
-  - models/
-  - routes/
-  - services/
-  - core/
-  - utils/
-  - config/
-- .env
-- requirements.txt
-- Dockerfile
-- docker-compose.yml
+## Environment Variables
+- App: `FLASK_APP`, `FLASK_ENV`
+- DB: `POSTGRES_USER`, `POSTGRES_PASSWORD`, `POSTGRES_DB`
 
 ## Notes
-- Run as non-root user in container
-- MongoDB data persisted via volume
-- All API endpoints use Pydantic validation
-- Logging and exception handling included
+- Multi-stage Dockerfile optimizes image size and security.
+- Data is persisted in a Docker volume (`pgdata`).
+- Update the Flask app to connect to the database as needed.
+
+## Group Members
+Gaurav Raundhale EN22IT301036
+
+Saniya Khan  EN22IT301091
+
+Soham Singh Khushwah  EN22IT301104
+
+Vedant Meena     EN22IT301120
+  
