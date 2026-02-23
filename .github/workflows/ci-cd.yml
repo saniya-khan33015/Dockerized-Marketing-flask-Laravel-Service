@@ -41,13 +41,19 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
   deploy:
-    # Removed "needs: docker" since we aren't building an image anymore
     needs: terraform
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/master' && github.event_name == 'push'
+    # IMPORTANT: If your secrets are inside a GitHub Environment, uncomment the line below:
+    # environment: production 
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+
+      - name: Debug Secret Check (Optional)
+        run: |
+          if [ -z "${{ secrets.EC2_HOST }}" ]; then echo "HOST IS MISSING"; else echo "HOST IS SET"; fi
+          if [ -z "${{ secrets.EC2_SSH_KEY }}" ]; then echo "KEY IS MISSING"; else echo "KEY IS SET"; fi
 
       - name: Copy files to EC2
         uses: appleboy/scp-action@v0.1.4
@@ -57,6 +63,8 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           source: "."
           target: "/home/ubuntu/app"
+          # Increases timeout for slow connections
+          timeout: 30s 
 
       - name: Restart Application via SSH
         uses: appleboy/ssh-action@v1.0.3
@@ -66,10 +74,5 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
             cd /home/ubuntu/app
-            # Example for a Node.js app using PM2, adjust for your language:
-            # npm install --production
-            # pm2 restart all || pm2 start index.js --name "app-test"
-            
-            # Example for a Python app:
-            # pip install -r requirements.txt
-            # sudo systemctl restart my-app.service
+            # Add your specific app start commands here
+            echo "Deployment successful at $(date)"
