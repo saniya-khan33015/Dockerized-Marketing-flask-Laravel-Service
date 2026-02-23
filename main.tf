@@ -9,40 +9,7 @@ terraform {
 }
 
 
-## Docker resources are commented out to skip Docker builds
-# resource "docker_image" "backend" {
-#   name         = "backend:latest"
-#   build {
-#     context    = "${path.module}"
-#     dockerfile = "Dockerfile"
-#   }
-# }
-#
-# resource "docker_image" "client" {
-#   name         = "client:latest"
-#   build {
-#     context    = "${path.module}/client"
-#     dockerfile = "${path.module}/client/Dockerfile"
-#   }
-# }
-#
-# resource "docker_container" "backend" {
-#   name  = "backend"
-#   image = docker_image.backend.name
-#   ports {
-#     internal = 8000
-#     external = 8000
-#   }
-# }
-#
-# resource "docker_container" "client" {
-#   name  = "client"
-#   image = docker_image.client.name
-#   ports {
-#     internal = 80
-#     external = 8080
-#   }
-# }
+## Docker resources removed. Only EC2 instance creation and deployment script remain.
 
 # AWS provider configuration
 provider "aws" {
