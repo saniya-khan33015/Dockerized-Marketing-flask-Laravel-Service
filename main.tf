@@ -92,11 +92,7 @@ output "ec2_public_url" {
   description = "URL to access the deployed app"
   value       = "http://${aws_instance.example.public_ip}"
 }
-# Output EC2 public IP
-output "ec2_public_ip" {
-  description = "Public IP address of the EC2 instance"
-  value       = aws_instance.example.public_ip
-}
+
 
 # Output EC2 public DNS
 output "ec2_public_dns" {
