@@ -40,4 +40,23 @@ jobs:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
+<<<<<<< HEAD
   # Docker and deploy jobs removed. Only Terraform EC2 deployment remains as per main.tf plan.
+=======
+
+  deploy:
+    needs: docker
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to EC2 via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ubuntu
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            docker pull ${{ secrets.DOCKERHUB_USERNAME }}/app-test:latest
+            docker stop app-test || true
+            docker rm app-test || true
+            docker run -d --name app-test -p 80:80 ${{ secrets.DOCKERHUB_USERNAME }}/app-test:latest
+>>>>>>> eff94152b4cd67fbe3c5055b859e8ad43a282f9a
